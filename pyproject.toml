@@ -2,7 +2,7 @@
 name = "nimb"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["aplneto <apln2@cin.ufpe.br>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

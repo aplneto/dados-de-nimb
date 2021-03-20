@@ -1,5 +1,5 @@
 '''
-
+Script que controla todas os comandos relacionados a rolagens do bot
 '''
 from discord.ext import commands
 
@@ -28,5 +28,5 @@ async def roll(ctx, string_dados):
 
 @nimb.command(name='testar', help='Simula um teste')
 async def test(ctx, string_dados):
-  sucessos, r = dados.Dados.testar(string_dados)
+  sucessos, r, d = dados.Dados.testar(string_dados)
   await ctx.send(f":game_die:: {r} = {sucessos} sucessos")

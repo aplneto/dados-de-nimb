@@ -108,11 +108,13 @@ class Dados:
     dados = re.findall('(?:[\+\-]?\d+d\d+[><]\d*)', string_rolagens)
     sucessos = 0
     rolagens = []
+    dificuldades = []
     for rolagem in dados:
-      s, r = Dados.avaliar_teste(rolagem)
+      s, r, d = Dados.avaliar_teste(rolagem)
       sucessos += s
       rolagens.append(r)
-    return sucessos, rolagens
+      dificuldades.append(r)
+    return sucessos, rolagens, dificuldades
   
   @staticmethod
   def avaliar_teste(string_rolagem):
@@ -130,7 +132,7 @@ class Dados:
       elif '<' in string_rolagem:
         sucessos += 1 if r <= dificuldade else 0
       resultados.append(r)
-    return sucessos, resultados
+    return sucessos, resultados, dificuldade
 
   @staticmethod
   def teste_alpha(dificuldade: int):

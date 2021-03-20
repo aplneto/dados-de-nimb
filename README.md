@@ -8,5 +8,10 @@
 ## TO-DO
 
 * Geração de Ficha (Possivelmente Flask ou GitHub Pages)
+  - Armazenamento da ficha no Servidor
 * Armazenamento de Ficha
 * Rolagens especiais (Magias, Ataques especiais, Vantagens e Desvantagens)
+
+## Créditos
+
+- [Ficha 3D&T Alpha](https://github.com/jsanchesleao/ficha-3det)

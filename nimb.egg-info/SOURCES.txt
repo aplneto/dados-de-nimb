@@ -1,0 +1,7 @@
+nimb.py
+setup.py
+nimb.egg-info/PKG-INFO
+nimb.egg-info/SOURCES.txt
+nimb.egg-info/dependency_links.txt
+nimb.egg-info/requires.txt
+nimb.egg-info/top_level.txt

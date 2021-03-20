@@ -1,3 +1,4 @@
+README.md
 nimb.py
 setup.py
 nimb.egg-info/PKG-INFO

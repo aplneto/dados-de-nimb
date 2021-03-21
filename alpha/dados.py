@@ -48,18 +48,20 @@ class Dados:
     criticos = []
     modificadores = re.findall("[\+\-]?\\b[\d]+\\b", string_dados)
     for dado in dados:
-      resultado, rolagem, c = Dados.__decifrar_rolagem(dado)
-      if len(criticos) == 0:
-        criticos.append(c)
-      rolagens.append(rolagem)
-      soma += resultado
+        resultado, rolagem, c = Dados.__decifrar_rolagem(dado)
+        if len(criticos) == 0:
+            criticos.append(c)
+        rolagens.append(rolagem)
+        soma += resultado
     for m in [int(x) for x in modificadores]:
-      soma += m
+        soma += m
+
     return {
       'valor': soma,
       'rolagens': rolagens,
       'mods': modificadores,
-      'crit': criticos[0]}
+      'crit': criticos[0]
+      }
 
   @staticmethod
   def __decifrar_rolagem(string_rolagem: str, **kwargs):
@@ -72,7 +74,7 @@ class Dados:
     soma = critico = 0
     rolagens, dado = re.findall("\\b\d+d\d+", string_rolagem)[0].split('d')
     for x in range(int(rolagens)):
-      resultados.append(random.randint(1, int(dado)))
+        resultados.append(random.randint(1, int(dado)))
     soma, critico = Dados.avaliar_soma(resultados, opt, dado)
     return soma, resultados, critico
 
@@ -81,11 +83,11 @@ class Dados:
     dados.sort(reverse=True)
     n = int(re.sub('(?:kl?|th?)', '', re.findall('(?:kl?|th?)\d+', options)[0])) if options else 0
     if 'k' in options:
-      useful = dados[len(dados) - n:] if ('l' in options) else dados[:n]
+        useful = dados[len(dados) - n:] if ('l' in options) else dados[:n]
     elif 't' in options:
-      useful = dados[n:] if ('h' in options) else dados[:len(dados) - n]
+        useful = dados[n:] if ('h' in options) else dados[:len(dados) - n]
     else:
-      useful = dados
+        useful = dados
     total = sum(useful)
 
     # Determinando se o ataque foi acerto ou falha crítica
@@ -93,9 +95,9 @@ class Dados:
     cs = int(maximo) if not 'cs' in options else int(re.sub('cs', '', re.findall('cs\d+', options)[0]))
     cf = 1 if not 'cf' in options else int(re.sub('cf', '', re.findall('cf\d+', options)[0]))
     if dados[0] >= cs:
-      critico = 1
+         critico = 1
     elif dados[0] <= cf:
-      critico = -1
+        critico = -1
 
     return total, critico
     
@@ -110,10 +112,10 @@ class Dados:
     rolagens = []
     dificuldades = []
     for rolagem in dados:
-      s, r, d = Dados.avaliar_teste(rolagem)
-      sucessos += s
-      rolagens.append(r)
-      dificuldades.append(r)
+        s, r, d = Dados.avaliar_teste(rolagem)
+        sucessos += s
+        rolagens.append(r)
+        dificuldades.append(r)
     return sucessos, rolagens, dificuldades
   
   @staticmethod
@@ -126,12 +128,12 @@ class Dados:
     rolagens, dado = re.findall("\\b\d+d\d+", string_rolagem)[0].split('d')
     dificuldade = int(re.sub('[><]', '', re.findall('[><]\d*', string_rolagem)[0]))
     for n in range(int(rolagens)):
-      r = random.randint(1, int(dado))
-      if '>' in string_rolagem:
-        sucessos += 1 if r >= dificuldade else 0
-      elif '<' in string_rolagem:
-        sucessos += 1 if r <= dificuldade else 0
-      resultados.append(r)
+        r = random.randint(1, int(dado))
+        if '>' in string_rolagem:
+            sucessos += 1 if r >= dificuldade else 0
+        elif '<' in string_rolagem:
+            sucessos += 1 if r <= dificuldade else 0
+        resultados.append(r)
     return sucessos, resultados, dificuldade
 
   @staticmethod
@@ -143,9 +145,9 @@ class Dados:
     critico = 0
     
     if d6 == 1:
-      critico = 1
+        critico = 1
     elif d6 == 6:
-      critico = -1
+        critico = -1
     
     sucessos = 1 if d6 <= dificuldade else 0
     return sucessos, [d6], critico

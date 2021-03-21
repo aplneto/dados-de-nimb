@@ -1,7 +1,8 @@
-from flask import Flask, request, redirect
+from flask import Flask, redirect
 from threading import Thread
 
 app = Flask('')
+
 
 @app.route('/')
 def home():
@@ -9,11 +10,12 @@ def home():
 
 @app.route('/ficha')
 def ficha():
-  #return render_template("ficha_form.html")
-  return redirect("https://jsanchesleao.github.io/ficha-3det/")
+    #return render_template("ficha_form.html")
+    return redirect("https://jsanchesleao.github.io/ficha-3det/")
 
 def run():
-  app.run(host='0.0.0.0',port=8080)
+    app.run(host='0.0.0.0', port=8080)
+
 
 def keep_alive():
     t = Thread(target=run)

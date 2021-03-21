@@ -28,5 +28,5 @@ async def roll(ctx, string_dados):
 
 @nimb.command(name='testar', help='Simula um teste')
 async def test(ctx, string_dados):
-  sucessos, r, d = dados.Dados.testar(string_dados)
-  await ctx.send(f":game_die:: {r} = {sucessos} sucessos")
+    sucessos, r, d = dados.Dados.testar(string_dados)
+    await ctx.send(f":game_die:: {r} = {sucessos} sucessos")

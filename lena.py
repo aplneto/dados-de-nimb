@@ -1,11 +1,15 @@
+'''
+Esse script controla a criação e armazenamento de personagens
+
+https://www.sqlitetutorial.net/sqlite-data-types/
+https://www.sqlitetutorial.net/sqlite-create-table/
+'''
+
 import alpha.personagens
-
-pasta_dos_personagens = "personagens/"
-
+import sqlite3
 import json
 
-template = pasta_dos_personagens + "template.json"
-with open(template) as tmp:
-  modelo = json.load(tmp)
+DB_FILE = "personagens.db"
 
-print(modelo)
+conn = sqlite3.connect(DB_FILE)
+cursos = conn.cursor()

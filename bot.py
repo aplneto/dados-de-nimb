@@ -12,8 +12,8 @@ async def on_ready():
     print('Logado como "{0.user}""'.format(bot))
 
 @bot.command(name='rolar', help='Simula rolagem de dados')
-async def roll(ctx, string_dados):
-    rolagem = dados.Dados.rolar(string_dados)
+async def roll(ctx, string_dados, efeitos=''):
+    rolagem = dados.Dados.rolar(string_dados, efeitos)
     msg = formatar_output(rolagem)
     await ctx.send(msg)
 

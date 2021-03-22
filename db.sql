@@ -1,23 +1,4 @@
-/**CREATE TABLE IF NOT EXISTS alpha.personagens (
-  iid_jogador TEXT PRIMARY KEY,
-  nome_personagem TEXT NOT NULL,
-  pontos INT DEFAULT 0,
-  forca INT DEFAULT 0,
-  habilidade INT DEFAULT 0,
-  resistencia INT DEFAULT 0,
-  armadura INT DEFAULT 0,
-  poder_de_fogo INT DEFAULT 0,
-  pv INT DEFAULT 1,
-  pvmax INT DEFAULT 1,
-  pm INT DEFAULT 1,
-  pmmax INT DEFAULT 1,
-  pe INT DEFAULT 0,
-  vantagem_unica TEXT,
-  vantagens TEXT,
-  desvantagens TEXT,
-  tipos_de_dano TEXT,
-  magias_conhecidas TEXT,
-  iventario TEXT,
-  historia TEXT,
+CREATE TABLE IF NOT EXISTS servidores (
+    nome TEXT;
+    id TEXT;
 )
-*/

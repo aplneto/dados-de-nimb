@@ -33,7 +33,7 @@ class Dados:
     pass
 
   @staticmethod
-  def rolar(string_dados: str):
+  def rolar(string_dados: str, efeitos = ""):
     '''
     Converte o formato da string para os dados e modificadores apropriados,
 
@@ -57,6 +57,17 @@ class Dados:
         soma += resultado
     for m in [int(x) for x in modificadores]:
         soma += m
+    
+    lista_efeitos = re.findall('(:?[cf][\+\-]\d+)', efeitos)
+    for mod in lista_efeitos:
+        if ('c' in mod) and criticos[0] == 1:
+            m = int(re.sub('c', '', mod))
+            soma += m
+            modificadores.append(m)
+        elif ('f' in mod) and criticos[0] == -1:
+            m = int(re.sub('f', '', mod))
+            soma += m
+            modificadores.append(m)
     return {
       'valor': soma,
       'rolagens': rolagens,

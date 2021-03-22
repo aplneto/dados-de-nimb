@@ -18,20 +18,18 @@ th|Funciona como a opção t, mas descarta os maiores valores|`3d6th2` rola 3d6 
 cs|Define o valor  que é considerado para o cálculo do acerto crítico, considerando apenas o primeiro dado para definir se o acerto é ou não crítico|`3d6cs5` rola 3d6 e considera o teste como acerto crítico se o primeiro dado for 5 ou maior.
 cf|Define o valor que é considerado para o cálculo de falha crítica, considerando apenas o primeiro dado para definir se o teste é ou não uma falha crítica|`3d6cf2` rola 3d6 e considera o teste como uma falha crítica se o primeiro dado for 2 ou menor.
 
-#### Testes
-opção|descrição|exemplo
---|--|--
-k|Essa opção permite manter apenas os n dados de maior valor para o resultado final. |`3d6>2k2` rola 3d6 e mantém apenas os dois maiores valores para calcular a quantidade de sucessos.
-t|Ao contrário da opção `k`, essa opção permite descartar os n menores valores do resultado final.|`3d6<5t2` rola 3d6 e descarta os dois menores resultados para calcular a quantidade de sucessos.
-
-#### Efeitos
-
 Os efeitos são bônus ou penalidades que o valor final do teste recebe condicionalmente. Podem ser os seguintes:
 
 condicional|descrição|exemplo
 --|--|--
 c|Adiciona um modificador caso o resultado rolado seja um acerto crítico | `c+4` caso o teste seja  um acerto crítico, o valor final recebe +4
 f|Adiciona um modificador caso o resultado rolado seja uma falha crítica | `f-3` caso o personagem um teste seja uma falha crítia, o valor final recebe -3
+
+#### Testes
+opção|descrição|exemplo
+--|--|--
+k|Essa opção permite manter apenas os n dados de maior valor para o resultado final. |`3d6>2k2` rola 3d6 e mantém apenas os dois maiores valores para calcular a quantidade de sucessos.
+t|Ao contrário da opção `k`, essa opção permite descartar os n menores valores do resultado final.|`3d6<5t2` rola 3d6 e descarta os dois menores resultados para calcular a quantidade de sucessos.
 
 ### !salvar *apelido* *string_de_rolagem*
 
@@ -58,7 +56,7 @@ Apaga uma rolagem salva na mesa. Apenas mestres podem usar esse comando
 <!--
 TODO:
 
-[ ] Efeitos de rolagens
+[x] Efeitos de rolagens
 [ ] !salvar apelido string_de_rolagem
 [ ] !rolagem *apelido*
 [ ] !listar_rolagens

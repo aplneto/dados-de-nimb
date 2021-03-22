@@ -1,7 +1,7 @@
 '''
 Script que controla todas os comandos relacionados a rolagens do bot
 '''
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 import alpha.dados as dados
 

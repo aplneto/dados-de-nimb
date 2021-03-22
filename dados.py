@@ -72,7 +72,6 @@ class Dados:
     '''
     opt = re.findall('(?:(?:(?:kl?|th?)\d+)?(?:c[sf]\d+)?)*', string_rolagem)
     opt = [x for x in opt if x]
-    print(opt)
     opt = opt[0] if len(opt)>0 else ""
     resultados = []
     soma = critico = 0
@@ -99,8 +98,6 @@ class Dados:
     critico = 0
     cs = int(maximo) if (not ('cs' in options)) else int(re.sub('cs', '', re.findall('cs\d+', options)[0]))
     cf = 1 if (not ('cf' in options)) else int(re.sub('cf', '', re.findall('cf\d+', options)[0]))
-    print(cs)
-    print(cf)
     if useful[0] >= cs:
          critico = 1
     elif useful[0] <= cf:

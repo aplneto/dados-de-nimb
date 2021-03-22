@@ -8,6 +8,7 @@ authors = ["aplneto <apln2@cin.ufpe.br>"]
 python = "^3.8"
 discord = "^1.0.1"
 flask = "^1.1.2"
+markdown = "^3.3.4"
 
 [tool.poetry.dev-dependencies]
 

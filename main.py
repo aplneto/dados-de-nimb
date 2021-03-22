@@ -1,9 +1,9 @@
 import os
+import pages
 
-import nimb
-from keep_alive import keep_alive
+import bot
 
-nimb_token = os.getenv("NIMB")
+token = os.getenv("TOKEN")
 
-keep_alive()
-nimb.nimb.run(nimb_token)
+pages.go_online()
+bot.bot.run(token)

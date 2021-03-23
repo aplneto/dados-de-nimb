@@ -1,9 +1,15 @@
 import os
 import pages
 
-import bot
+from discord.ext import commands
+
+from db_bot import RPGDatabaseBot
 
 token = os.getenv("TOKEN")
 
+bot = commands.Bot(command_prefix="!")
+bot.add_cog(RPGDatabaseBot(bot, "rolagens.db"))
+
 pages.go_online()
-bot.bot.run(token)
+
+bot.run(token)

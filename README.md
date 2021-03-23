@@ -43,9 +43,13 @@ Executa uma rolagem específica salva anteriormente pelo mestre.
 
 `!rolagem bola_de_fogo`
 
-### !listar_rolagens
+### !rolagens
 
-Lista todas as rolagens da mesa  seus apelidos
+Lista todas as rolagens da mesa
+
+### !consultar *apelido*
+
+Checa se a rolagem específica existe
 
 ### !apagar *apelido*
 
@@ -57,10 +61,12 @@ Apaga uma rolagem salva na mesa. Apenas mestres podem usar esse comando
 TODO:
 
 [x] Efeitos de rolagens
-[ ] !salvar apelido string_de_rolagem
-[ ] !rolagem *apelido*
-[ ] !listar_rolagens
-[ ] !apagar *apelido*
-[ ] modificar o comando !help
+[x] !salvar apelido string_de_rolagem
+[x] !rolagem *apelido*
+[x] !listar_rolagens
+[x] !apagar *apelido*
+[x] modificar o comando !help
+
+[ ] Configurar as rolagens para usar embed, similar aos resultados do roll20, usando cores diferentes para acerto crítico, falha crítica e rolagem normal
 
 -->

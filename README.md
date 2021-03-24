@@ -34,6 +34,7 @@ t|Ao contrário da opção `k`, essa opção permite descartar os n menores valo
 ### !salvar *apelido* *string_de_rolagem*
 
 Salva uma rolagem específica com um apelido que pode ser usado por qualquer jogador da mesa, mas apenas mestres podem usar esse comando. Caso uma rolagem já exista, seu valor é atualizado.
+As rolagens usadas com esse comando são associadas ao canal em que foram usadas.
 
 `!salvar bola_de_fogo 2d6+5`
 
@@ -51,22 +52,29 @@ Lista todas as rolagens da mesa
 
 Checa se a rolagem específica existe
 
+`!consultar bola_de_fogo`
+
 ### !apagar *apelido*
 
 Apaga uma rolagem salva na mesa. Apenas mestres podem usar esse comando
 
 `!apagar bola_de_fogo`
 
-<!--
-TODO:
+### !lembrar *apelido* *string_de_rolagem*
 
-[x] Efeitos de rolagens
-[x] !salvar apelido string_de_rolagem
-[x] !rolagem *apelido*
-[x] !listar_rolagens
-[x] !apagar *apelido*
-[x] modificar o comando !help
+Salva uma rolagem específica com um apelido que pode ser usado por você, pode ser usado por qualquer membro jogador. Caso uma rolagem já exista, seu valor é atualizado.
 
-[ ] Configurar as rolagens para usar embed, similar aos resultados do roll20, usando cores diferentes para acerto crítico, falha crítica e rolagem normal
+`!lembrar "Ataque Especial" 1d12+5 c+6`
 
--->
+### !favorita *apelido*
+
+Executa uma rolagem específica salva anteriormente por você.
+
+`!favorita "Ataque Especial"`
+### !favoritas
+
+Lista todas as suas rolagens
+
+### !esquecer *apelido*
+
+Apaga uma rolagem salva por você

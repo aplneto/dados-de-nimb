@@ -19,33 +19,42 @@ class DadosBot(commands.Cog):
         '''
         rolagem = Dados.rolar(string_dados, efeitos)
         msg = DadosBot.formatar_output(ctx.author.nick, rolagem)
-        await ctx.send(msg)
+        await ctx.send(embed = msg)
 
     @staticmethod
     def formatar_output(usr, rolagem: dict):
         '''
         Formata outputs de rolagens e testes para envio para o servidor
         '''
+        em = discord.Embed(title=":game_die:")
         if (rolagem.get('rolagem')):
             total = rolagem.get('valor')
             rolagens = rolagem.get('rolagens')
             mods = rolagem.get('mods')
             die = '+'.join([str(x) for x in rolagens + mods]).replace("++", "+").replace("+-", "-")
-            return f":game_die: {usr} rolou: {die} = {total}"
+            em.description = f"{usr} rolou: {die} = {total}"
+            if (rolagem.get('crit') == 1):
+                em.colour = discord.Colour.green()
+            elif (rolagem.get('crit') == -1):
+                em.colour = discord.Colour.red()
+            else:
+                em.colour = discord.Colour.blue()
         else:
             sucessos = rolagem.get('sucessos')
             rolagens = rolagem.get('rolagens')
-            return f":game_die: {usr} rolou: {'+'.join([str(x) for x in rolagens])} = {sucessos} sucessos"
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print('Logado como "{0.user}""'.format(self.bot))
+            if (sucessos > 0):
+                em.description = f"{usr} rolou: {'+'.join([str(x) for x in rolagens])} = {sucessos} sucessos"
+                em.colour = discord.Colour.green()
+            else:
+                em.description = f"{usr} rolou: {'+'.join([str(x) for x in rolagens])} = Falhou"
+                em.colour = discord.Colour.red()
+        return em
 
     @commands.group(invoke_without_command=True)
     async def ajuda(self, ctx):
         em = discord.Embed(
             title="Ajuda",
-            description= "Use o comando !ajuda <comando> para mais opções",
+            description = "Use o comando !ajuda <comando> para maiores detalhes",
             colour = discord.Colour.from_rgb(255, 255, 0)
         )
 
@@ -68,3 +77,24 @@ class DadosBot(commands.Cog):
     @commands.command(name="help")
     async def help(self, ctx):
         await self.ajuda(ctx)
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print('Logado como "{0.user}""'.format(self.bot))
+    
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+
+        if hasattr(ctx.command, 'on_error'):
+            return
+        
+        ignored = (commands.errors.CommandNotFound,)
+        if isinstance(error, ignored):
+            return
+
+        resp = ""
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            resp = "Seu comando precisa de um argumento!"
+        
+        em = discord.Embed(title=":x:", colour=discord.Colour.red(), description=resp)
+        await ctx.send(embed=em)

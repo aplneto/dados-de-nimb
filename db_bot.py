@@ -75,7 +75,7 @@ class RPGDatabaseBot(DadosBot):
         statement = 'SELECT rolagens.apelido, rolagens.dados FROM rolagens WHERE rolagens.g_id = ? AND rolagens.c_id = ?;'
         self.__cursor.execute(statement, (ctx.author.guild.id, ctx.channel.id))
         resultados = self.__cursor.fetchall()
-        em = discord.Embed(title=":game_die:", description="Rolagens", colour=discord.Colour.from_rgb(255, 255, 0))
+        em = discord.Embed(title=":game_die:", description="Rolagens da mesa", colour=discord.Colour.from_rgb(255, 255, 0))
         for x in resultados:
             em.add_field(name=f"{x[0]}", value=f"\"{x[1]}\"")
         await ctx.send(embed=em)
@@ -130,7 +130,7 @@ class RPGDatabaseBot(DadosBot):
         statement = 'SELECT favoritas.apelido, favoritas.dados FROM favoritas WHERE favoritas.u_id = ?;'
         self.__cursor.execute(statement, (ctx.author.id,))
         resultados = self.__cursor.fetchall()
-        em = discord.Embed(title=":star:", description="Favoritas", colour=discord.Colour.from_rgb(255, 255, 0))
+        em = discord.Embed(title=":star:", description="Suas rolagens", colour=discord.Colour.from_rgb(255, 255, 0))
         for x in resultados:
             em.add_field(name=f"{x[0]}", value=f"\"{x[1]}\"")
         await ctx.send(embed=em)

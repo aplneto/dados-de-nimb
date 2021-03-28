@@ -44,6 +44,8 @@ class Dados:
     '''
     if (re.match(Dados.rxp_teste, string_dados)):
         return Dados.testar(string_dados)
+    if not re.match(Dados.rxp_rolagem, string_dados):
+        raise ValueError
     dados = re.findall("\\b(?:[\+\-]?\d+d\d+(?:(?:(?:kl?|th?)\d+)?(?:c[sf]\d+)?)*)\\b", string_dados)
     rolagens = []
     soma = 0
@@ -68,6 +70,8 @@ class Dados:
             m = int(re.sub('f', '', mod))
             soma += m
             modificadores.append(m)
+    if not criticos:
+        criticos.append(0)
     return {
       'valor': soma,
       'rolagens': rolagens,

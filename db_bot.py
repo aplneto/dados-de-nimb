@@ -3,9 +3,11 @@ Script que controla o Bot de rolagem com banco de dados
 '''
 import sqlite3
 import discord
+import re
 
 from discord.ext import commands
 from dados_bot import DadosBot
+from rolagens import Dados
 
 class RPGDatabaseBot(DadosBot):
     def __init__(self, bot, db_name = "rolagens.db"):
@@ -19,6 +21,27 @@ class RPGDatabaseBot(DadosBot):
         with open("db.sql") as db_file:
             self.__cursor.executescript(db_file.read())
         self.__initialized = True
+    
+    @commands.command(name='rolar', help='Simula rolagem de dados')
+    async def roll(self, ctx, string_dados, efeitos=''):
+        if (re.match(Dados.rxp_teste + '|' + Dados.rxp_rolagem, string_dados)):
+            await DadosBot.roll(self, ctx, string_dados, efeitos)
+            return
+        else:
+            statement = 'SELECT rolagens.dados FROM rolagens WHERE rolagens.apelido = ? AND rolagens.g_id = ? AND rolagens.c_id = ?;'
+            self.__cursor.execute(statement, (string_dados, ctx.author.guild.id, ctx.channel.id))
+            rolagem = self.__cursor.fetchone()
+            if rolagem:
+                await DadosBot.roll(self, ctx, *rolagem[0].split(' '))
+                return
+            else:
+                statement = 'SELECT favoritas.dados FROM favoritas WHERE favoritas.apelido = ? AND favoritas.u_id = ?;'
+                self.__cursor.execute(statement, (string_dados, ctx.author.id))
+                rolagem = self.__cursor.fetchone()
+                if rolagem:
+                    await DadosBot.roll(self, ctx, *rolagem[0].split(' '))
+                    return
+        raise ValueError
 
     @commands.command(name="salvar")
     @commands.has_role("Mestre")
@@ -43,38 +66,8 @@ class RPGDatabaseBot(DadosBot):
             colour=discord.Colour.from_rgb(255, 255, 0)
         )
         await ctx.send(embed=em)
-            
 
-    @commands.command(name='rolagem')
-    async def executar_rolagem_salva(self, ctx, apelido: str):
-        '''
-        Tenta executar uma rolagem salva no banco de dados caso ela exista
-        '''
-        statement = 'SELECT rolagens.dados FROM rolagens WHERE rolagens.apelido = ? AND rolagens.g_id = ? AND rolagens.c_id = ?;'
-        self.__cursor.execute(statement, (apelido, ctx.author.guild.id, ctx.channel.id))
-        rolagem = self.__cursor.fetchone()
-        if rolagem:
-            await DadosBot.roll(self, ctx, *rolagem[0].split(' '))
-        else:
-            resp = f"Rolagem {apelido} não encontrada"
-            await ctx.send(embed = discord.Embed(title=":game_die:", description=resp, colour=discord.Colour.from_rgb(255, 255, 0)))
-    
-    @commands.command(name='consultar')
-    async def checar_rolagem_salva(self, ctx, apelido:str):
-        '''
-        Verifica se uma rola existe, enviando a formatação ao jogador caso exista
-        '''
-        statement = 'SELECT rolagens.dados FROM rolagens WHERE rolagens.apelido = ? AND rolagens.g_id = ? AND rolagens.c_id = ?;'
-        self.__cursor.execute(statement, (apelido, ctx.author.guild.id, ctx.channel.id))
-        rolagem = self.__cursor.fetchone()
-        em = discord.Embed(title=":game_die:", colour=discord.Colour.from_rgb(255, 255, 0))
-        if rolagem:
-            em.add_field(name=f"{apelido}", value=f"\"{rolagem[0]}\"")
-        else:
-            em.description = f'Rolagem {apelido} não encontrada'
-        await ctx.send(embed=em)
-
-    @commands.command(name='rolagens')
+    @commands.command(name='salvas')
     async def listar_rolagens_salvas(self, ctx):
         '''
         Lista todas as rolagens do canal salvas no banco de dados
@@ -187,46 +180,36 @@ class RPGDatabaseBot(DadosBot):
         em.add_field(name="Dados", value="rolar")
         em.add_field(
             name = "Rolagens da mesa",
-            value = "rolagem, rolagens, consultar, salvar, apagar"
+            value = "salvas, salvar, apagar"
         )
         em.add_field(
             name = "Rolagens Individuais",
-            value = " favorita, favoritas, lembrar, esquecer"
+            value = "favoritas, lembrar, esquecer"
         )
         await ctx.send(embed = em)
-    
+
     @ajuda.command()
-    async def rolagem(self, ctx):
+    async def rolar(self, ctx):
         em = discord.Embed(
-            title = "Rolagem",
-            description = "Executa uma rolagem específica salva anteriormente pelo mestre.",
+            title="Rolar",
+            description="Faz a rolagem descrita pela string, pode conter dados, modificadores e operações de soma e subtração entre números e dados, além de opções avançadas de rolagem (veja a tabela adiante), retornando a soma dos valores. \nPode também ser usada para testes, podendo conter comparações matemáticas como \"<\" e \">\" e opções avançadas de rolagem e retorna a quantidade de sucessos resultante do teste.\n Por fim, pode ser usada para fazer rolagens salvas na mesa ou por você",
             colour = discord.Colour.from_rgb(255, 255, 0)
         )
-        em.add_field(name="Uso", value="!rolagem <nome da rolagem>\nVocê deve usar aspas se o nome da rolagem possuir espaços.")
-        em.add_field(name="Exemplo", value="!rolagem \"Bola de fogo\"")
-
+        em.add_field(name="Uso", value="!rolar <string> [efeitos]")
+        em.add_field(name="opções", value="k, t, kl, th, cs, cf")
+        em.add_field(name="efeitos", value="c, f")
+        em.add_field(name="Exemplo", value="!rolar 1d6c5+2+1 c+2")
+        em.add_field(name="Exemplo", value="!rolar ataque")
         await ctx.send(embed = em)
     
     @ajuda.command()
-    async def rolagens(self, ctx):
+    async def salvas(self, ctx):
         em = discord.Embed(
-            title = "Rolagens",
+            title = "Salvas",
             description = "Lista todas as rolagens da mesa.",
             colour = discord.Colour.from_rgb(255, 255, 0)
         )
         em.add_field(name="Uso", value="!rolagens.")
-
-        await ctx.send(embed = em)
-    
-    @ajuda.command()
-    async def consultar(self, ctx):
-        em = discord.Embed(
-            title = "Consultar",
-            description = "Procura pelo valor de uma rolagem específica, caso ela exista.",
-            colour = discord.Colour.from_rgb(255, 255, 0)
-        )
-        em.add_field(name="Uso", value="!consultar <nome da rolagem>")
-        em.add_field(name="Exemplo", value="!consultar \"Bola de fogo\"")
 
         await ctx.send(embed = em)
     
@@ -251,18 +234,6 @@ class RPGDatabaseBot(DadosBot):
         )
         em.add_field(name="Uso", value="!apagar \"<nome da rolagem>\"")
         em.add_field(name="Exemplo", value="!apagar \"Bola de fogo\"")
-
-        await ctx.send(embed = em)
-    
-    @ajuda.command()
-    async def favorita(self, ctx):
-        em = discord.Embed(
-            title = "Favorita",
-            description = "Executa uma rolagem específica salva anteriormente por você.",
-            colour = discord.Colour.from_rgb(255, 255, 0)
-        )
-        em.add_field(name="Uso", value="!favorita <nome da rolagem>\nVocê deve usar aspas se o nome da rolagem possuir espaços.")
-        em.add_field(name="Exemplo", value="!favorita \"Ataque Especial\"")
 
         await ctx.send(embed = em)
 

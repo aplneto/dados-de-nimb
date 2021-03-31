@@ -18,8 +18,8 @@ class DadosBot(commands.Cog):
         Recebe os inputs da chamada de rolagem padrão, delegando as tarefas para a classe de Dados resolver
         '''
         rolagem = Dados.rolar(string_dados, efeitos)
-        msg = DadosBot.formatar_output(ctx.author.nick, rolagem)
-        await ctx.send(embed = msg)
+        em = DadosBot.formatar_output(ctx.author.nick, rolagem)
+        await ctx.send(embed = em)
 
     @staticmethod
     def formatar_output(usr, rolagem: dict):
@@ -31,7 +31,16 @@ class DadosBot(commands.Cog):
             total = rolagem.get('valor')
             rolagens = rolagem.get('rolagens')
             mods = rolagem.get('mods')
-            die = '+'.join([str(x) for x in rolagens + mods]).replace("++", "+").replace("+-", "-")
+            r_final = []
+            for i in range(len(rolagens)):
+                dados = []
+                for d in range(len(rolagens[i])):
+                    if d < rolagem['validos'][i]:
+                        dados.append(str(rolagens[i][d]))
+                    else:
+                        dados.append('~~'+str(rolagens[i][d])+'~~')
+                r_final.append('['+', '.join(dados)+']')
+            die = '+'.join([str(x) for x in r_final + mods]).replace("++", "+").replace("+-", "-")
             em.description = f"{usr} rolou: {die} = {total}"
             if (rolagem.get('crit') == 1):
                 em.colour = discord.Colour.green()
@@ -42,17 +51,27 @@ class DadosBot(commands.Cog):
         else:
             sucessos = rolagem.get('sucessos')
             rolagens = rolagem.get('rolagens')
+            r_final = []
+            for i in range(len(rolagens)):
+                dados = []
+                for d in range (len(rolagens[i])):
+                    if d < rolagem['validos'][i]:
+                        dados.append(str(rolagens[i][d]))
+                    else:
+                        dados.append('~~'+str(rolagens[i][d])+'~~')
+                r_final.append('['+', '.join(dados)+']')
             if (sucessos > 0):
-                em.description = f"{usr} rolou: {'+'.join([str(x) for x in rolagens])} = {sucessos} sucessos"
+                s = 'sucessos' if sucessos > 1 else 'sucesso'
+                em.description = f"{usr} rolou: {', '.join(r_final)} = {sucessos} {s}"
                 em.colour = discord.Colour.green()
             else:
-                em.description = f"{usr} rolou: {'+'.join([str(x) for x in rolagens])} = Falhou"
+                em.description = f"{usr} rolou: {', '.join(r_final)} = Falhou"
                 em.colour = discord.Colour.red()
         return em
 
     @commands.group(invoke_without_command=True)
     async def ajuda(self, ctx):
-        em = discord.Embed(
+        msg, em = discord.Embed(
             title="Ajuda",
             description = "Use o comando !ajuda <comando> para maiores detalhes",
             colour = discord.Colour.from_rgb(255, 255, 0)
@@ -81,7 +100,7 @@ class DadosBot(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print('Logado como "{0.user}""'.format(self.bot))
-    
+'''    
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
 
@@ -98,3 +117,4 @@ class DadosBot(commands.Cog):
         
         em = discord.Embed(title=":x:", colour=discord.Colour.red(), description=resp)
         await ctx.send(embed=em)
+'''

@@ -28,7 +28,7 @@ class Dados:
   # Regex do formato da string de rolagem
   rxp_rolagem = "(?:^\\b(?:(?:[\+\-]?\d+d\d+(?:(?:(?:kl?|th?)\d+)?(?:c[sf]\d+)?)*)|(?:[\+\-]?[\d]+))+\\b$)"
   # Regex do formato da string de teste
-  rxp_teste = "(?:[\+\-]?\d+d\d+(?:[kt]\d+)?[><]\d+)+"
+  rxp_teste = "^(?:[\+\-]?\d+d\d+(?:[kt]\d+)?[><]\d+)+$"
   def __init__(self):
     pass
 
@@ -50,12 +50,14 @@ class Dados:
     rolagens = []
     soma = 0
     criticos = []
+    validos = []
     modificadores = re.findall("[\+\-]?\\b[\d]+\\b", string_dados)
     for dado in dados:
-        resultado, rolagem, c = Dados.__decifrar_rolagem(dado)
+        resultado, rolagem, c, valido = Dados.__decifrar_rolagem(dado)
         if len(criticos) == 0:
             criticos.append(c)
         rolagens.append(rolagem)
+        validos.append(valido)
         soma += resultado
     for m in [int(x) for x in modificadores]:
         soma += m
@@ -77,7 +79,8 @@ class Dados:
       'rolagens': rolagens,
       'mods': modificadores,
       'crit': criticos[0],
-      'rolagem': True
+      'rolagem': True,
+      'validos': validos
       }
 
   @staticmethod
@@ -93,8 +96,8 @@ class Dados:
     rolagens, dado = re.findall("\\b\d+d\d+", string_rolagem)[0].split('d')
     for x in range(int(rolagens)):
         resultados.append(random.randint(1, int(dado)))
-    soma, critico = Dados.avaliar_soma(resultados, opt, dado)
-    return soma, resultados, critico
+    soma, critico, validos = Dados.avaliar_soma(resultados, opt, dado)
+    return soma, resultados, critico, validos
 
   @staticmethod
   def avaliar_soma(dados: list, options: str, maximo: int):
@@ -118,7 +121,7 @@ class Dados:
     elif useful[0] <= cf:
         critico = -1
 
-    return total, critico
+    return total, critico, len(useful)
     
 
   @staticmethod
@@ -130,16 +133,19 @@ class Dados:
     sucessos = 0
     rolagens = []
     dificuldades = []
+    validos = []
     for rolagem in dados:
-        s, r, d = Dados.__avaliar_teste(rolagem)
+        s, r, d, v = Dados.__avaliar_teste(rolagem)
         sucessos += s
         rolagens.append(r)
         dificuldades.append(r)
+        validos.append(v)
     return {
         'sucessos': sucessos,
         'rolagens': rolagens,
         'dificuldades': dificuldades,
-        'rolagem': False
+        'rolagem': False,
+        'validos': validos
         }
   
   @staticmethod
@@ -171,4 +177,4 @@ class Dados:
         elif '<' in string_rolagem:
             sucessos += 1 if x <= dificuldade else 0
     
-    return sucessos, resultados, dificuldade
+    return sucessos, resultados, dificuldade, len(useful)

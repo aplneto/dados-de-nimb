@@ -1,5 +1,8 @@
 # Dados e rolagens
 
+[Discod Invite link](https://discord.com/api/oauth2/authorize?client_id=822648071867465748&permissions=2147743808&scope=bot)
+[Repl.it repository](https://replit.com/@paulinolimakl/Dados-de-Nimb)
+
 Bot simples de rolagm de dados para discord
 
 ## Comandos
@@ -38,11 +41,11 @@ As rolagens usadas com esse comando são associadas ao canal em que foram usadas
 
 `!salvar bola_de_fogo 2d6+5`
 
-### !rolagem *apelido*
+### !rolar *apelido*
 
-Executa uma rolagem específica salva anteriormente pelo mestre.
+Executa uma rolagem específica salva anteriormente pelo mestre ou uma rolagem favorita do jogador, tendo prioridade a rolagm da mesa.
 
-`!rolagem bola_de_fogo`
+`!rolar bola_de_fogo`
 
 ### !rolagens
 
@@ -66,11 +69,6 @@ Salva uma rolagem específica com um apelido que pode ser usado por você, pode 
 
 `!lembrar "Ataque Especial" 1d12+5 c+6`
 
-### !favorita *apelido*
-
-Executa uma rolagem específica salva anteriormente por você.
-
-`!favorita "Ataque Especial"`
 ### !favoritas
 
 Lista todas as suas rolagens

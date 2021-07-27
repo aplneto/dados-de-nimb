@@ -1,6 +1,7 @@
 # Dados e rolagens
 
-[Discod Invite link](https://discord.com/api/oauth2/authorize?client_id=822648071867465748&permissions=2147743808&scope=bot)
+[Discord Invite link](https://discord.com/api/oauth2/authorize?client_id=822648071867465748&permissions=2147743808&scope=bot)
+
 [Repl.it repository](https://replit.com/@paulinolimakl/Dados-de-Nimb)
 
 Bot simples de rolagm de dados para discord
